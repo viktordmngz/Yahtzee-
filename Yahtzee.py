@@ -1,4 +1,6 @@
 '''
+STILL WORKING ON THIS
+
 Created by: Viktor Dominguez
 Date Created: 04/18/2025  (MM/DD/YYYY)
 Last Updated: 04/18/2025  (MM/DD/YYYY)
@@ -17,6 +19,7 @@ NOTE
 
 This code is intended to run in a terminal/console.
 If the code does not work with your computer, try commenting out the functions that require OS.
+Also, sometimes I add files to my GitHub that aren't complete just to have them there. I will mark this "COMPLETED" when finished.
 
 ======
 RULES
