@@ -1,5 +1,5 @@
 '''
-ALMOST COMPLETE
+MIGHT BE COMPLETE
 
 Created by: Viktor Dominguez
 Date Created: 04/18/2025  (MM/DD/YYYY)
@@ -104,7 +104,7 @@ class Player:
 if __name__ == '__main__':
     # Dice Roll Function
     def diceRoll():
-      delay_readout("\nRolling...")
+      delay_readout("Rolling...")
       return randint(1,6)
 
     # Function for: Determine which dice to hold during Player's turn
@@ -116,7 +116,8 @@ if __name__ == '__main__':
           if iter == 14:
             break
           print(f"{iter}) {k}: {v}")
-        print('\n\n')
+        print('\n--CURRENT SCORECARD--\n\n')
+        sleep(1.5)
         for k,item in enumerate(rolls):
           delay_readout(f"{k}) {item}\n")
         delay_readout('n) None\na) All')
@@ -135,7 +136,7 @@ if __name__ == '__main__':
           delay_readout(f"\nKeeping ")
           for item in choices:
             keepers.append(rolls[int(item)])
-          delay_readout(f"{keepers}")
+          delay_readout(f"{keepers}\n\n")
           sleep(1.0)
           break
         else:
@@ -156,53 +157,53 @@ if __name__ == '__main__':
       frequency_rolls = sorted(rolls, key=counter(rolls).get, reverse=True)
       # Large Straight
       if (rolls == seq4 or rolls == seq5) and player_cpu.scorecard["Large Straight"] == None:
-        delay_readout(f"\nThe CPU is keeping: {rolls}")
+        delay_readout(f"\nThe CPU is keeping: {rolls}\n\n")
         sleep(1.0)
         clear()
         return rolls
       # keep the rolls for a small straight if Large Straight has been scored
       elif (rolls == seq4 or rolls == seq5) and player_cpu.scorecard["Small Straight"] == None:
-        delay_readout(f"\nThe CPU is keeping: {rolls}")
+        delay_readout(f"\nThe CPU is keeping: {rolls}\n\n")
         sleep(1.0)
         clear()
         return rolls
       # Small Straights
       elif (rolls[:4] == seq1 or rolls[1:] == seq1) and player_cpu.scorecard["Small Straight"] == None:
-        delay_readout(f"\nThe CPU is keeping: {seq1}")
+        delay_readout(f"\nThe CPU is keeping: {seq1}\n\n")
         sleep(1.0)
         clear()
         return seq1
       elif (rolls[:4] == seq2 or rolls[1:] == seq2) and player_cpu.scorecard["Small Straight"] == None:
-        delay_readout(f"\nThe CPU is keeping: {seq2}")
+        delay_readout(f"\nThe CPU is keeping: {seq2}\n\n")
         sleep(1.0)
         clear()
         return seq2
       elif (rolls[:4] == seq3 or rolls[1:] == seq3) and player_cpu.scorecard["Small Straight"] == None:
-        delay_readout(f"\nThe CPU is keeping: {seq3}")
+        delay_readout(f"\nThe CPU is keeping: {seq3}\n\n")
         sleep(1.0)
         clear()
         return seq3
       # Full House/3 of a Kind
       elif rolls.count(frequency_rolls[0]) == 3:
         if rolls.count(frequency_rolls[3]) == 2 and player_cpu.scorecard["Full House"] == None:
-          delay_readout(f"\nThe CPU is keeping: {rolls}")
+          delay_readout(f"\nThe CPU is keeping: {rolls}\n\n")
           sleep(1.0)
           clear()
           return rolls
         else:
-          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*3}")
+          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*3}\n\n")
           sleep(1.0)
           clear()
           return [frequency_rolls[0]]*3
       # 4 of a Kind/Yahtzee
       elif rolls.count(frequency_rolls[0]) >= 4:
         if rolls.count(frequency_rolls[0]) == 5:
-          delay_readout(f"\nThe CPU is keeping: {rolls}")
+          delay_readout(f"\nThe CPU is keeping: {rolls}\n\n")
           sleep(1.0)
           clear()
           return rolls
         else:
-          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*4}")
+          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*4}\n\n")
           sleep(1.0)
           clear()
           return [frequency_rolls[0]]*4
@@ -214,25 +215,25 @@ if __name__ == '__main__':
           if player_cpu.scorecard[str(frequency_rolls[0])] == None and player_cpu.scorecard[str(frequency_rolls[2])] == None:
             # Check FULL HOUSE first, then...
             if player_cpu.scorecard["Full House"] == None:
-              delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2+[frequency_rolls[2]]*2}")
+              delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2+[frequency_rolls[2]]*2}\n\n")
               sleep(1.0)
               clear()
               return [frequency_rolls[0]]*2+[frequency_rolls[2]]*2
             # Take higher of the pairs
             else:
-              delay_readout(f"\nThe CPU is keeping: {[max(frequency_rolls[0],frequency_rolls[2])]*2}")
+              delay_readout(f"\nThe CPU is keeping: {[max(frequency_rolls[0],frequency_rolls[2])]*2}\n\n")
               sleep(1.0)
               clear()
               return [max(frequency_rolls[0],frequency_rolls[2])]*2
           # If first pair hasn't been scored yet but second has
           elif player_cpu.scorecard[str(frequency_rolls[0])] == None and player_cpu.scorecard[str(frequency_rolls[2])] != None:
-            delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2}")
+            delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2}\n\n")
             sleep(1.0)
             clear()
             return [frequency_rolls[0]]*2
           # If first pair has been scored but second hasn't
           elif player_cpu.scorecard[str(frequency_rolls[0])] != None and player_cpu.scorecard[str(frequency_rolls[2])] == None:
-            delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[2]]*2}")
+            delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[2]]*2}\n\n")
             sleep(1.0)
             clear()
             return [frequency_rolls[2]]*2
@@ -240,21 +241,37 @@ if __name__ == '__main__':
           elif player_cpu.scorecard[str(frequency_rolls[0])] != None and player_cpu.scorecard[str(frequency_rolls[2])] != None:
             # Check FULL HOUSE...
             if player_cpu.scorecard["Full House"] == None:
-              delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2+[frequency_rolls[2]]*2}")
+              delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2+[frequency_rolls[2]]*2}\n\n")
               sleep(1.0)
               clear()
               return [frequency_rolls[0]]*2+[frequency_rolls[2]]*2
             # 3 of a Kind/Chance categories
             else:
-              delay_readout(f"\nThe CPU is keeping: {[max(frequency_rolls[0],frequency_rolls[2])]*2}")
+              delay_readout(f"\nThe CPU is keeping: {[max(frequency_rolls[0],frequency_rolls[2])]*2}\n\n")
               sleep(1.0)
               clear()
               return [max(frequency_rolls[0], frequency_rolls[2])]*2
         else:
-          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2}")
+          delay_readout(f"\nThe CPU is keeping: {[frequency_rolls[0]]*2}\n\n")
           sleep(1.0)
           clear()
           return [frequency_rolls[0]]*2
+      else:
+        if player_cpu.scorecard["6"] == None and 6 in rolls:
+          delay_readout(f"\nThe CPU is keeping: {[6]}\n\n")
+          sleep(1.0)
+          clear()
+          return [6]
+        elif player_cpu.scorecard["5"] == None and 5 in rolls:
+          delay_readout(f"\nThe CPU is keeping: {[5]}\n\n")
+          sleep(1.0)
+          clear()
+          return [5]
+        else:
+          delay_readout(f"\nThe CPU is keeping none!\n\n")
+          sleep(1.0)
+          clear()
+          return []
 
     # Updating Player Scorecard Function
     def updatePlayerScorecard(playerName, rolls):
@@ -823,6 +840,7 @@ if __name__ == '__main__':
             rolls.append(diceRoll())
             delay_readout(f"{rolls[-1]}!\n")
             sleep(0.5)
+          print('\n')
           sleep(0.5)
           keepers = humanKeepDice(rolls)
           # Make sure keepers is not full
