@@ -116,6 +116,8 @@ if __name__ == '__main__':
           if iter == 14:
             break
           print(f"{iter}) {k}: {v}")
+        print(f"\nBonus Status: {sum([x for x in list(player_user.scorecard.values())[:6] if x != None])}/63\n\n")
+        sleep(0.5)
         print('\n--CURRENT SCORECARD--\n\n')
         sleep(1.5)
         for k,item in enumerate(rolls,start=1):
@@ -284,19 +286,22 @@ if __name__ == '__main__':
       rolls.sort()
       clear()
       print('\n\n')
-      # Display rolls for user to see
-      for item in rolls:
-        delay_readout(f"{item}  ")
-      print()
       wasScored = False
         
       while wasScored == False:
+        # Display rolls for user to see
+        for item in rolls:
+          delay_readout(f"{item}  ")
+        print()
         # Display scorecard
         for i, (k,v) in enumerate(playerName.scorecard.items(),start=1):
           if i == len(playerName.scorecard.items()):
             break
-          delay_readout(f"\n{i}) {k}: {v}")
-        
+          print(f"{i}) {k}: {v}")
+          sleep(0.2)
+        print(f"\nBonus Status: {sum([x for x in list(playerName.scorecard.values())[:6] if x != None])}/63\n\n")
+        sleep(0.5)
+
         # Choose which category to score
         delay_readout(f"\n\nPlease choose a category to apply your rolls to (1-13): ")
         try:
@@ -317,414 +322,259 @@ if __name__ == '__main__':
             # matching the scores with the category choice
             match scorecardChoice:
               case 1:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["1"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahtzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Bonus Yahtzee check
-                  if rolls == [1]*5:
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [1]*5:
+                  # Bonus Yahtzee points
                     playerName.scorecard["1"] = 5 + 100
-                    delay_readout(f"\nCongrats! You scored {5} points plus the Yahtzee bonus of 100 for the 1s category")
+                    delay_readout("\nCongrats! You scored 105 points (+100 Yahtzee Bonus) for the \"1\" category\n")
                     sleep(1.5)
                     wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                    # Should be the same as the normal scoring
-                  else:
-                    playerName.scorecard["1"] = rolls.count(1)
-                    delay_readout(f"\nYou scored {rolls.count(1)} points for the 1s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus has been achieved...
-                  else:
-                    # If bonus has not already been scored...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                # Normal scoring
                 else:
                   playerName.scorecard["1"] = rolls.count(1)
-                  delay_readout(f"\nYou scored {rolls.count(1)} points for the 1s category")
+                  delay_readout(f"\nYou scored {rolls.count(1)} points for the \"1\" category\n")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus has been achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                # 35 point bonus check for standard categories
+                if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                  delay_readout("\nCongrats! You got the 35 point bonus!")
+                  sleep(1.0)
+                  playerName.scorecard["Bonus"] = 35
+                clear()
               case 2:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["2"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahtzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Bonus Yahtzee check
-                  if rolls == [2]*5:
-                    playerName.scorecard["2"] = 10 + 100
-                    delay_readout(f"\nCongrats! You scored {10} points plus the Yahtzee bonus of 100 for the 2s category")
-                    sleep(1.5)
-                    wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                  else:
-                    playerName.scorecard["2"] = rolls.count(2) * 2
-                    delay_readout(f"\nYou scored {rolls.count(2)*2} points for the 2s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [2]*5:
+                  # Bonus Yahtzee points
+                  playerName.scorecard["2"] = 10 + 100
+                  delay_readout("\nCongrats! You scored 110 points (+100 Yahtzee Bonus) for the \"2\" category\n")
+                  sleep(1.5)
+                  wasScored = True
+                # Normal scoring
                 else:
                   playerName.scorecard["2"] = rolls.count(2) * 2
-                  delay_readout(f"\nYou scored {rolls.count(2)*2} points for the 2s category")
+                  delay_readout(f"\nYou scored {rolls.count(2)*2} points for the \"2\" category\n")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                  # 35 point bonus check for standard categories
+                  if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                    delay_readout("\nCongrats! You got the 35 point bonus!")
+                    sleep(1.0)
+                    playerName.scorecard["Bonus"] = 35
+                clear()
               case 3:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["3"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahtzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Yahtzee bonus check
-                  if rolls == [3]*5:
-                    playerName.scorecard["3"] = 15 + 100
-                    delay_readout(f"\nCongrats! You scored {15} points plus the Yahtzee bonus of 100 for the 3s category")
-                    sleep(1.5)
-                    wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                  else:
-                    playerName.scorecard["3"] = rolls.count(3) * 3
-                    delay_readout(f"\nYou scored {rolls.count(3)*3} points for the 3s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [3]*5:
+                  # Bonus Yahtzee points
+                  playerName.scorecard["3"] = 15 + 100
+                  delay_readout("\nCongrats! You scored 115 points (+100 Yahtzee Bonus) for the \"3\" category")
+                  sleep(1.5)
+                  wasScored = True
+                # Normal scoring
                 else:
                   playerName.scorecard["3"] = rolls.count(3) * 3
-                  delay_readout(f"\nYou scored {rolls.count(3)*3} points for the 3s category")
+                  delay_readout(f"\nYou scored {rolls.count(3)*3} points for the \"3\" category")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                # 35 point bonus check for standard categories
+                if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                  delay_readout(f"\nCongrats! You got the 35 point bonus!\n")
+                  sleep(1.0)
+                  playerName.scorecard["Bonus"] = 35
+                clear()
               case 4:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["4"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahtzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Yahtzee bonus check
-                  if rolls == [4]*5:
-                    playerName.scorecard["4"] = 20 + 100
-                    delay_readout(f"\nCongrats! You scored {20} points plus the Yahtzee bonus of 100 for the 4s category")
-                    sleep(1.5)
-                    wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                  else:
-                    playerName.scorecard["4"] = rolls.count(4) * 4
-                    delay_readout(f"\nYou scored {rolls.count(4)*4} points for the 4s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [4]*5:
+                  # Bonus Yahtzee points
+                  playerName.scorecard["4"] = 20 + 100
+                  delay_readout(f"\nCongrats! You scored 120 points (+100 Yahtzee Bonus) for the \"4\" category\n")
+                  sleep(1.5)
+                  wasScored = True
+                # Normal scoring
                 else:
                   playerName.scorecard["4"] = rolls.count(4) * 4
-                  delay_readout(f"\nYou scored {rolls.count(4)*4} points for the 4s category")
+                  delay_readout(f"\nYou scored {rolls.count(4)*4} points for the \"4\" category\n")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                # 35 point bonus check for standard categories
+                if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                  delay_readout(f"\nCongrats! You got the 35 point bonus!")
+                  sleep(1.0)
+                  playerName.scorecard["Bonus"] = 35
+                clear()
               case 5:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["5"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Yahtzee bonus check
-                  if rolls == [5]*5:
-                    playerName.scorecard["5"] = 25 + 100
-                    delay_readout(f"\nCongrats! You scored {25} points plus the Yahtzee bonus of 100 for the 5s category")
-                    sleep(1.5)
-                    wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                  else:
-                    playerName.scorecard["5"] = rolls.count(5) * 5
-                    delay_readout(f"\nYou scored {rolls.count(5)*5} points for the 5s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [5]*5:
+                  # Bonus Yahtzee points
+                  playerName.scorecard["5"] = 25 + 100
+                  delay_readout(f"\nCongrats! You scored 125 points (+100 Yahtzee Bonus) for the \"5\" category\n")
+                  sleep(1.5)
+                  wasScored = True
+                # Normal scoring
                 else:
                   playerName.scorecard["5"] = rolls.count(5) * 5
-                  delay_readout(f"\nYou scored {rolls.count(5)*5} points for the 5s category")
+                  delay_readout(f"\nYou scored {rolls.count(5)*5} points for the \"5\" category\n")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                # 35 point bonus check for standard categories
+                if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                  delay_readout("\nCongrats! You got the 35 point bonus!\n")
+                  sleep(1.0)
+                  playerName.scorecard["Bonus"] = 35
+                clear()
               case 6:
+                # If the category has already been scored, don't overwrite
                 if playerName.scorecard["6"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If Yahzee has been scored already...
-                if playerName.scorecard["Yahtzee"] == 50:
-                  # Yahtzee bonus check
-                  if rolls == [6]*5:
-                    playerName.scorecard["6"] = 30 + 100
-                    delay_readout(f"\nCongrats! You scored {30} points plus the Yahtzee bonus of 100 for the 6s category")
-                    sleep(1.5)
-                    wasScored = True
-                  # If Yahtzee has been scored but player doesn't have Yahtzee
-                  else:
-                    playerName.scorecard["6"] = rolls.count(6) * 6
-                    delay_readout(f"\nYou scored {rolls.count(6)*6} points for the 6s category")
-                    sleep(1.5)
-                    wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
-                # If Yahtzee has not been scored yet...
+                if playerName.scorecard["Yahtzee"] == 50 and rolls == [6]*5:
+                  # Bonus Yahtzee points
+                  playerName.scorecard["6"] = 30 + 100
+                  delay_readout(f"\nCongrats! You scored 130 points (+100 Yahtzee Bonus) for the \"6\" category\n")
+                  sleep(1.5)
+                  wasScored = True
+                # Normal scoring
                 else:
                   playerName.scorecard["6"] = rolls.count(6) * 6
-                  delay_readout(f"\nYou scored {rolls.count(6)*6} points for the 6s category")
+                  delay_readout(f"\nYou scored {rolls.count(6)*6} points for the \"6\" category\n")
                   sleep(1.5)
                   wasScored = True
-                  try:
-                    # 35 point bonus check for standard categories
-                    sum(list(playerName.scorecard.values())[:6]) > 62
-                  except:
-                    clear()
-                  # If bonus is achieved...
-                  else:
-                    # If bonus has not been scored yet...
-                    if playerName.scorecard["Bonus"] == 0:
-                      delay_readout(f"\nCongrats! You got the 35 point bonus!")
-                      sleep(1.0)
-                      playerName.scorecard["Bonus"] = 35
-                    clear()
+                # 35 point bonus check for standard categories
+                if sum([x for x in list(playerName.scorecard.values())[:6] if x != None]) > 62 and playerName.scorecard["Bonus"] == 0:
+                  delay_readout("\nCongrats! You got the 35 point bonus!\n")
+                  sleep(1.0)
+                  playerName.scorecard["Bonus"] = 35
+                clear()
               case 7:
                 if playerName.scorecard["3 of a Kind"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If player selects "3 of a Kind", but doesn't have 3 of a Kind...
                 if rolls.count(frequency_rolls[0]) < 3:
                   playerName.scorecard["3 of a Kind"] = 0
-                  delay_readout("\nYou scored 0 points for the 3 of a Kind category")
+                  delay_readout("\nYou scored 0 points for the \"3 of a Kind\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 # If player has 3 of a Kind...
                 else:
                   playerName.scorecard["3 of a Kind"] = sum(rolls)
-                  delay_readout(f"\nYou scored {sum(rolls)} points for the 3 of a Kind category")
+                  delay_readout(f"\nYou scored {sum(rolls)} points for the \"3 of a Kind\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
               case 8:
                 if playerName.scorecard["4 of a Kind"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 # If player selects "4 of a Kind", but doesn't have 4 of a Kind...
                 if rolls.count(frequency_rolls[0]) < 4:
                   playerName.scorecard["4 of a Kind"] = 0
-                  delay_readout("\nYou scored 0 points for the 4 of a Kind category")
+                  delay_readout("\nYou scored 0 points for the \"4 of a Kind\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 # If player has 4 of a Kind...
                 else:
                   playerName.scorecard["4 of a Kind"] = sum(rolls)
-                  delay_readout(f"\nYou scored {sum(rolls)} points for the 4 of a Kind category")
+                  delay_readout(f"\nYou scored {sum(rolls)} points for the \"4 of a Kind\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
               case 9:
                 if playerName.scorecard["Full House"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 if rolls.count(frequency_rolls[0]) == 3 and rolls.count(frequency_rolls[3]) == 2:
                   playerName.scorecard["Full House"] = 25
-                  delay_readout("\nYou scored 25 points for the Full House category")
+                  delay_readout("\nYou scored 25 points for the \"Full House\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 else:
                   playerName.scorecard["Full House"] = 0
-                  delay_readout("\nYou scored 0 points for the Full House category")
+                  delay_readout("\nYou scored 0 points for the \"Full House\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
               case 10:
                 if playerName.scorecard["Small Straight"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 seq1, seq2, seq3 = [1,2,3,4], [2,3,4,5], [3,4,5,6]
                 if (set(rolls) >= set(seq1) or set(rolls) >= set(seq2) or set(rolls) >= set(seq3)) or (set(rolls) >= set(seq1) or set(rolls) >= set(seq2) or set(rolls) >= set(seq3)):
                   playerName.scorecard["Small Straight"] = 30
-                  delay_readout("\nYou scored 30 points for the Small Straight category")
+                  delay_readout("\nYou scored 30 points for the \"Small Straight\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 else:
                   playerName.scorecard["Small Straight"] = 0
-                  delay_readout("\nYou scored 0 points for the Small Straight category")
+                  delay_readout("\nYou scored 0 points for the \"Small Straight\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
+                del seq1, seq2, seq3
               case 11:
                 if playerName.scorecard["Large Straight"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 seq1, seq2 = [1,2,3,4,5], [2,3,4,5,6]
                 if rolls == seq1 or rolls == seq2:
                   playerName.scorecard["Large Straight"] = 40
-                  delay_readout("\nYou scored 40 points for the Large Straight category")
+                  delay_readout("\nYou scored 40 points for the \"Large Straight\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 else:
                   playerName.scorecard["Large Straight"] = 0
-                  delay_readout("\nYou scored 0 points for the Large Straight category")
+                  delay_readout("\nYou scored 0 points for the \"Large Straight\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
+                del seq1, seq2
               case 12:
                 if playerName.scorecard["Yahtzee"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 if rolls.count(rolls[0]) == 5:
                   playerName.scorecard["Yahtzee"] = 50
-                  delay_readout("\nYAHTZEE! Way to go! 50 points!")
+                  delay_readout("\nYAHTZEE! Way to go! 50 points!\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
                 else:
                   playerName.scorecard["Yahtzee"] = 0
-                  delay_readout("\nYou scored 0 points for the Yahtzee category")
+                  delay_readout("\nYou scored 0 points for the \"Yahtzee\" category\n")
                   sleep(1.5)
                   wasScored = True
                   clear()
               case 13:
                 if playerName.scorecard["Chance"] != None:
-                  delay_readout("\nSorry, this category has already been scored. Please pick another category.")
-                  break
+                  delay_readout("\nSorry, this category has already been scored. Please pick another category.\n")
+                  continue
                 playerName.scorecard["Chance"] = sum(rolls)
-                delay_readout(f"\nYou scored {sum(rolls)} points for the Chance category")
+                delay_readout(f"\nYou scored {sum(rolls)} points for the \"Chance\" category\n")
                 sleep(1.5)
                 wasScored = True
                 clear()
@@ -837,6 +687,7 @@ if __name__ == '__main__':
                 scoreOptions["Small Straight"] = 0
             else:
               scoreOptions["Small Straight"] = 0
+            del seq1, seq2, seq3
           case 11:
             if cpuPlayer.scorecard["Large Straight"] == None:
               seq1, seq2 = [1,2,3,4,5], [2,3,4,5,6]
@@ -846,6 +697,7 @@ if __name__ == '__main__':
                 scoreOptions["Large Straight"] = 0
             else:
               scoreOptions["Large Straight"] = 0
+            del seq1, seq2
           case 12:
             if cpuPlayer.scorecard["Yahtzee"] == None:
               if rolls.count(rolls[0]) == 5:
@@ -865,7 +717,7 @@ if __name__ == '__main__':
       sleep(1.5)
       clear()
       # Delete variables to clear memory
-      del seq1, seq2, seq3, frequency_rolls, max_score, scoreOptions
+      del frequency_rolls, max_score, scoreOptions
 
     # Function for: Player's turn rolling and selecting dice to keep
     def playerTurn():
@@ -935,8 +787,8 @@ if __name__ == '__main__':
             rolls.append(item)
           for _ in range(len(keepers),5):
             rolls.append(diceRoll())
-            delay_readout(f"\nRolling...{rolls[-1]}!")
-          print('\n\n')
+            # delay_readout(f"\nRolling...{rolls[-1]}!")
+          # print('\n\n')
       return rolls
 
     # Function for: Playing the game. Includes calls for updating scorecards and updating player records at the end
