@@ -590,66 +590,48 @@ if __name__ == '__main__':
         match i:
           case 1:
             if cpuPlayer.scorecard["1"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [1]*5:
-                  scoreOptions["1"] = 5 + 100
-                else:
-                  scoreOptions["1"] = rolls.count(1)
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [1]*5:
+                scoreOptions["1"] = 5 + 100
               else:
                 scoreOptions["1"] = rolls.count(1)
             else:
               scoreOptions["1"] = 0
           case 2:
             if cpuPlayer.scorecard["2"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [2]*5:
-                  scoreOptions["2"] = 10 + 100
-                else:
-                  scoreOptions["2"] = rolls.count(2) * 2
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [2]*5:
+                scoreOptions["2"] = 10 + 100
               else:
                   scoreOptions["2"] = rolls.count(2) * 2
             else:
                 scoreOptions["2"] = 0
           case 3:
             if cpuPlayer.scorecard["3"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [3]*5:
-                  scoreOptions["3"] = rolls.count(3) * 3 + 100
-                else:
-                  scoreOptions["3"] = rolls.count(3) * 3
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [3]*5:
+                scoreOptions["3"] = 15 + 100
               else:
                 scoreOptions["3"] = rolls.count(3) * 3
             else:
               scoreOptions["3"] = 0
           case 4:
             if cpuPlayer.scorecard["4"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [4]*5:
-                  scoreOptions["4"] = rolls.count(4) * 4 + 100
-                else:
-                  scoreOptions["4"] = rolls.count(4) * 4
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [4]*5:
+                scoreOptions["4"] = 20 + 100
               else:
                 scoreOptions["4"] = rolls.count(4) * 4
             else:
               scoreOptions["4"] = 0
           case 5:
             if cpuPlayer.scorecard["5"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [5]*5:
-                  scoreOptions["5"] = rolls.count(5) * 5 + 100
-                else:
-                  scoreOptions["5"] = rolls.count(5) * 5
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [5]*5:
+                scoreOptions["5"] = 25 + 100
               else:
                 scoreOptions["5"] = rolls.count(5) * 5
             else:
               scoreOptions["5"] = 0
           case 6:
             if cpuPlayer.scorecard["6"] == None:
-              if cpuPlayer.scorecard["Yahtzee"] == 50:
-                if rolls == [6]*5:
-                  scoreOptions["6"] = rolls.count(6) * 6 + 100
-                else:
-                  scoreOptions["6"] = rolls.count(6) * 6
+              if cpuPlayer.scorecard["Yahtzee"] == 50 and rolls == [6]*5:
+                scoreOptions["6"] = 30 + 100
               else:
                 scoreOptions["6"] = rolls.count(6) * 6
             else:
@@ -661,7 +643,7 @@ if __name__ == '__main__':
               else:
                 scoreOptions["3 of a Kind"] = sum(rolls)
             else:
-              scoreOptions["3 of a Kind"] = sum(rolls)
+              scoreOptions["3 of a Kind"] = 0
           case 8:
             if cpuPlayer.scorecard["4 of a Kind"] == None:
               if rolls.count(frequency_rolls[0]) < 4:
@@ -669,7 +651,7 @@ if __name__ == '__main__':
               else:
                 scoreOptions["4 of a Kind"] = sum(rolls)
             else:
-              scoreOptions["4 of a Kind"] = sum(rolls)
+              scoreOptions["4 of a Kind"] = 0
           case 9:
             if cpuPlayer.scorecard["Full House"] == None:
               if rolls.count(frequency_rolls[0]) == 3 and rolls.count(frequency_rolls[3]) == 2:
