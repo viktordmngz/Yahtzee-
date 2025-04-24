@@ -58,7 +58,7 @@ If the player has already marked the Yahtzee category with a 0, then no bonus is
 
 These rules come from the Hasbro rules, so feel free to change the scoring rules in the code below for any house rules you play by.
 '''
-
+from random import choice
 from random import randint
 import sys
 from time import sleep
@@ -292,7 +292,7 @@ if __name__ == '__main__':
         # Display rolls for user to see
         for item in rolls:
           delay_readout(f"{item}  ")
-        print()
+        print('\n\n')
         # Display scorecard
         for i, (k,v) in enumerate(playerName.scorecard.items(),start=1):
           if i == len(playerName.scorecard.items()):
@@ -303,11 +303,11 @@ if __name__ == '__main__':
         sleep(0.5)
 
         # Choose which category to score
-        delay_readout(f"\n\nPlease choose a category to apply your rolls to (1-13): ")
+        delay_readout(f"Please choose a category to apply your rolls to (1-13): ")
         try:
           scorecardChoice = int(input())
         except ValueError:
-          delay_readout("\nYou have input something that is not a number. Please try again.")
+          delay_readout("\nYou have input something that is not a number. Please try again.\n")
           sleep(0.5)
           clear()
           continue
@@ -586,6 +586,7 @@ if __name__ == '__main__':
       rolls.sort()
       for item in rolls:
         delay_readout(f"{item}  ")
+      print('\n\n')
       for i in range(1,14):
         match i:
           case 1:
@@ -667,9 +668,9 @@ if __name__ == '__main__':
                 scoreOptions["Small Straight"] = 30
               else:
                 scoreOptions["Small Straight"] = 0
+              del seq1, seq2, seq3
             else:
               scoreOptions["Small Straight"] = 0
-            del seq1, seq2, seq3
           case 11:
             if cpuPlayer.scorecard["Large Straight"] == None:
               seq1, seq2 = [1,2,3,4,5], [2,3,4,5,6]
@@ -677,9 +678,9 @@ if __name__ == '__main__':
                 scoreOptions["Large Straight"] = 40
               else:
                 scoreOptions["Large Straight"] = 0
+              del seq1, seq2
             else:
               scoreOptions["Large Straight"] = 0
-            del seq1, seq2
           case 12:
             if cpuPlayer.scorecard["Yahtzee"] == None:
               if rolls.count(rolls[0]) == 5:
@@ -694,6 +695,9 @@ if __name__ == '__main__':
             else:
               scoreOptions["Chance"] = 0
       max_score = [max(scoreOptions, key=scoreOptions.get),max(scoreOptions.values())]
+      # If the max score is 0, pick a random category to score -- Probably a better way to do this
+      if max_score[1] == 0:
+        max_score[0] = choice([x for x in list(cpuPlayer.scorecard.keys()) if cpuPlayer.scorecard[x]==None])
       cpuPlayer.scorecard[max_score[0]] = max_score[1]
       delay_readout(f"\nThe CPU chose to score {rolls} in the {max_score[0]} category for {max_score[1]} points.")
       sleep(1.5)
@@ -747,8 +751,8 @@ if __name__ == '__main__':
         rolls = []
         if i == 0:
           keepers = cpuKeepDice(rolls,[])
-          if keepers in [[1,2,3,4],[2,3,4,5],[3,4,5,6]]:
-            return keepers
+          if keepers in [[1,2,3,4],[2,3,4,5],[3,4,5,6]] and player_cpu.scorecard["Large Straight"] != None:
+            return rolls
           # Make sure keepers is not full
           if len(keepers) == 5:
             return keepers
@@ -757,8 +761,8 @@ if __name__ == '__main__':
           for item in keepers:
             rolls.append(item)
           keepers.sort()
-          if keepers in [[1,2,3,4],[2,3,4,5],[3,4,5,6]]:
-            return keepers
+          if keepers in [[1,2,3,4],[2,3,4,5],[3,4,5,6]] and player_cpu.scorecard["Large Straight"] != None:
+            return rolls
           keepers = cpuKeepDice(rolls,keepers)
           # Make sure keepers is not full
           if len(keepers) == 5:
@@ -869,7 +873,7 @@ if __name__ == '__main__':
     sleep(1.0)
     delay_readout("\n\nGet ready to play Yahtzee!")
     sleep(0.5)
-    delay_readout(f"\nYour opponent will be {player_cpu.name}.\n\nHe's a grand-master, so good luck!")
+    delay_readout(f"\n\nYour opponent will be {player_cpu.name}.\n\nHe's a grand-master, so good luck!")
     sleep(1.0)
 
     # Game Loop
