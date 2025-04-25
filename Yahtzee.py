@@ -1,5 +1,5 @@
 '''
-ALMOST COMPLETE
+COMPLETE (I think)
 
 Created by: Viktor Dominguez
 Date Created: 04/18/2025  (MM/DD/YYYY)
@@ -58,6 +58,7 @@ If the player has already marked the Yahtzee category with a 0, then no bonus is
 
 These rules come from the Hasbro rules, so feel free to change the scoring rules in the code below for any house rules you play by.
 '''
+
 from random import choice
 from random import randint
 import sys
@@ -595,6 +596,10 @@ if __name__ == '__main__':
                 scoreOptions["1"] = 5 + 100
               else:
                 scoreOptions["1"] = rolls.count(1)
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
               scoreOptions["1"] = 0
           case 2:
@@ -603,6 +608,10 @@ if __name__ == '__main__':
                 scoreOptions["2"] = 10 + 100
               else:
                   scoreOptions["2"] = rolls.count(2) * 2
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
                 scoreOptions["2"] = 0
           case 3:
@@ -611,6 +620,10 @@ if __name__ == '__main__':
                 scoreOptions["3"] = 15 + 100
               else:
                 scoreOptions["3"] = rolls.count(3) * 3
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
               scoreOptions["3"] = 0
           case 4:
@@ -619,6 +632,10 @@ if __name__ == '__main__':
                 scoreOptions["4"] = 20 + 100
               else:
                 scoreOptions["4"] = rolls.count(4) * 4
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
               scoreOptions["4"] = 0
           case 5:
@@ -627,6 +644,10 @@ if __name__ == '__main__':
                 scoreOptions["5"] = 25 + 100
               else:
                 scoreOptions["5"] = rolls.count(5) * 5
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
               scoreOptions["5"] = 0
           case 6:
@@ -635,6 +656,10 @@ if __name__ == '__main__':
                 scoreOptions["6"] = 30 + 100
               else:
                 scoreOptions["6"] = rolls.count(6) * 6
+              # Check for 35 point bonus
+              if sum([x for x in list(cpuPlayer.scorecard.values())[:6] if cpuPlayer.scorecard[x] != None]) > 62 and cpuPlayer.scorecard["Bonus"] == 0:
+                cpuPlayer.scorecard["Bonus"] = 35
+                delay_readout(f"\n{cpuPlayer.name} got the bonus!\n")
             else:
               scoreOptions["6"] = 0
           case 7:
@@ -780,22 +805,22 @@ if __name__ == '__main__':
     # Function for: Playing the game. Includes calls for updating scorecards and updating player records at the end
     def game():
       # Gameplay Loop
-      while None in player_cpu.scorecard.values():
+      while None in player_user.scorecard.values():
         delay_readout(f"\n\nStarting {player_name}'s turn.\n\n")
-        sleep(2.0)
+        sleep(1.0)
         clear()
         updatePlayerScorecard(player_user,playerTurn())
         sleep(1.5)
         clear()
         delay_readout(f"\n\nStarting {player_cpu.name}'s turn.\n\n")
-        sleep(2.0)
+        sleep(1.0)
         clear()
         updateOpponentScorecard(player_cpu,cpuTurn())
         sleep(1.5)
         clear()
-      # Player Wins! Update wins and streak attributes
       player_final_score = sum(player_user.scorecard.values())
       cpu_final_score = sum(player_cpu.scorecard.values())
+      # Player Wins! Update wins and streak attributes
       if player_final_score > cpu_final_score:
         delay_readout(f"\nCongratulations, {player_user.name}! You won!")
         delay_readout(f"\n\nFinal score: {player_user.name} - {player_final_score}\t{player_cpu.name} - {cpu_final_score}")
@@ -885,13 +910,13 @@ if __name__ == '__main__':
       sleep(1.0)
       # Ask to play again
       while True:
-        delay_readout("Would you like to play again? (y/n): ")
+        delay_readout("\n\nWould you like to play again? (y/n): ")
         answer = input().lower()
         if len(answer) > 1:
           delay_readout("\n\nYou have entered too many characters. Please try again.\n\n")
           sleep(1.0)
           continue
-        elif answer == ('y' or 'n'):
+        elif answer == 'y' or answer == 'n':
           break
         else:
           delay_readout(f"\n\nYou have entered an incorrect character. Please enter either a 'y' or 'n' to answer. Please try again.\n\n")
